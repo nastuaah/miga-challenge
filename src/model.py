@@ -13,14 +13,14 @@ class AttnPool(nn.Module):
         )
 
     def forward(self, x, mask):
-        score = self.scorer(x).squeeze(-1)            # (B,T)
+        score = self.scorer(x).squeeze(-1)           
         score = score.float()
 
         score = score.masked_fill(~mask, -1e4)
 
-        w = torch.softmax(score, dim=1).unsqueeze(-1) # (B,T,1)
-        w = w.to(dtype=x.dtype)                       # back to original dtype
-        return (x * w).sum(dim=1)                     # (B,D)
+        w = torch.softmax(score, dim=1).unsqueeze(-1) 
+        w = w.to(dtype=x.dtype)                       
+        return (x * w).sum(dim=1)                     
 
 
 
