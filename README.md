@@ -56,7 +56,7 @@ Building `/content/phase1_all_with_split.csv`:
 
 Cached features are written to Google Drive.
 - Phase 1 cache directory:
-  - `/content/drive/MyDrive/miga_features_cache_agcn`
+  - [`/content/drive/MyDrive/miga_features_cache_agcn`](https://drive.google.com/drive/folders/1wx77jdvzYPDFmXWWjKo76mGUg_Ghj3eR?usp=sharing)
  
 **5.1 Caching context features (ctx)**
 ```bash
@@ -97,7 +97,7 @@ TriStreamModel processes three aligned sequences:
 - Focal loss with pos_weight (class imbalance handling)
 - Validation metric: ROC AUC on validation fold
 - Cross-validation: stratifiedKFold ensures class ratio is preserved in each fold.
-- Best checkpoint saved to: `/content/drive/MyDrive/best_tristream_cv_agcn.pt`
+- Best checkpoint saved to: [`/content/drive/MyDrive/best_tristream_cv_agcn.pt`](https://drive.google.com/file/d/1fCPdkaUaZJNtd9BNaSROGlS8ZNfJpzcl/view?usp=sharing)
 - **Best CV AUC: 0.6947368421052631**
 
 ## 8. Phase 2 (Test) CSV Preparation 
@@ -108,7 +108,7 @@ Building /content/phase2_all_with_paths.csv:
 - `skeleton_path`
 
 ## 9. Phase 2 Feature Caching
-Phase 2 cached features are written to: `/content/drive/MyDrive/miga_features_cache_agcn_p2`
+Phase 2 cached features are written to: [`/content/drive/MyDrive/miga_features_cache_agcn_p2`](https://drive.google.com/drive/folders/11bBvaHCe4l2YAy4m2Y9e6Lwa2lfvyUqY?usp=sharing)
 
 ## 10. Inference on Phase 2 (Test)
 **10.1 Load model checkpoint**
@@ -143,4 +143,5 @@ model.eval()
 - The submission file contain:
   - video_id: integer ID
   - label: predicted probability in [0, 1]
+  - submission file: https://drive.google.com/file/d/1EayOgKZ-TKqRp9trmRNPgve3-CUYzKhY/view?usp=sharing
 <img width="600" height="200" alt="image" src="https://github.com/user-attachments/assets/dc1ee081-41fa-4ae6-a5ba-3657ce09c1f7" />
