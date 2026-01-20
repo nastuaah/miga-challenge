@@ -49,7 +49,7 @@
 ## 4. Phase 1 CSV Preparation 
 Building `/content/phase1_all_with_split.csv`:
 - `video_id`
-- `label` (only Phase 1)
+- `label` 
 - `split` in `{train, val}`
 
 ## 5. Phase 1 Feature Caching
@@ -93,9 +93,54 @@ TriStreamModel processes three aligned sequences:
 - Concatenation of pooled embeddings → MLP head → single logit
 - Output:logit of shape (B,) or (B, 1) (implementation returns (B,))
 
-## Training (Phase 1) 
+## 7. Training (Phase 1) 
 - Focal loss with pos_weight (class imbalance handling)
 - Validation metric: ROC AUC on validation fold
 - Cross-validation: stratifiedKFold ensures class ratio is preserved in each fold.
 - Best checkpoint saved to: `/content/drive/MyDrive/best_tristream_cv_agcn.pt`
 - **Best CV AUC: 0.6947368421052631**
+
+## 8. Phase 2 (Test) CSV Preparation 
+Building /content/phase2_all_with_paths.csv:
+- `video_id`
+- `split="test"`
+- `video_path`
+- `skeleton_path`
+
+## 9. Phase 2 Feature Caching
+Phase 2 cached features are written to: `/content/drive/MyDrive/miga_features_cache_agcn_p2`
+
+## 10. Inference on Phase 2 (Test)
+**10.1 Load model checkpoint**
+```bash
+from src.model import TriStreamModel
+import torch
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+MODEL_PATH = "/content/drive/MyDrive/best_tristream_cv_agcn.pt"
+
+model = TriStreamModel(
+    d_ctx_in=512,
+    d_face_in=1280,
+    d_skel_in=512,
+    d=512,
+    n_layers=4,
+    n_heads=4,
+    dropout=0.3
+).to(device)
+
+state = torch.load(MODEL_PATH, map_location=device)
+model.load_state_dict(state)
+model.eval()
+  ```
+
+**10.2 Run inference**
+- For each batch:
+  - forward → logits
+  - probability = sigmoid(logit) (binary class probability)
+    
+**10.3 Create submission.csv**
+- The submission file contain:
+  - video_id: integer ID
+  - label: predicted probability in [0, 1]
+<img width="600" height="200" alt="image" src="https://github.com/user-attachments/assets/dc1ee081-41fa-4ae6-a5ba-3657ce09c1f7" />
