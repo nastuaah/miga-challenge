@@ -82,3 +82,20 @@ PYTHONPATH=/content PYTHONDONTWRITEBYTECODE=1 python -u /content/src/cache_featu
   --chunk 32 --device cuda --do_skel
   ```
 For large caching runs, the CSV range was splitted into shards 10-25 items each.
+
+## 6. TriStreamModel
+TriStreamModel processes three aligned sequences:
+- Context: (B, W, 512)
+- Face: (B, W, 1280)
+- Skeleton: (B, W, 512)
+- Linear projection → common hidden dim d=512
+- Transformer encoder per stream (n_layers=4, n_heads=4)
+- Concatenation of pooled embeddings → MLP head → single logit
+- Output:logit of shape (B,) or (B, 1) (implementation returns (B,))
+
+## Training (Phase 1) 
+- Focal loss with pos_weight (class imbalance handling)
+- Validation metric: ROC AUC on validation fold
+- Cross-validation: stratifiedKFold ensures class ratio is preserved in each fold.
+- Best checkpoint saved to: `/content/drive/MyDrive/best_tristream_cv_agcn.pt`
+- **Best CV AUC: 0.6947368421052631**
