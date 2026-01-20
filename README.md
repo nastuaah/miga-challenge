@@ -25,7 +25,7 @@
 - `src/train_model.py` / `src/inference.py`  
   Files for training/inference
 
-### **3. Feature Caching **
+### 3. Feature Caching 
 **3.1 Context stream (`*_ctx.pt`)**
 - Video is split into windows of length `chunk` frames.
 - Each window is embedded by a video backbone into a fixed vector.
