@@ -143,5 +143,5 @@ model.eval()
 - The submission file contain:
   - video_id: integer ID
   - label: predicted probability in [0, 1]
-  - submission file: https://drive.google.com/file/d/1EayOgKZ-TKqRp9trmRNPgve3-CUYzKhY/view?usp=sharing
+  - submission file: [/content/drive/MyDrive/best_tristream_cv_agcn.pt](https://drive.google.com/file/d/1fCPdkaUaZJNtd9BNaSROGlS8ZNfJpzcl/view?usp=sharing)
 <img width="600" height="200" alt="image" src="https://github.com/user-attachments/assets/dc1ee081-41fa-4ae6-a5ba-3657ce09c1f7" />
