@@ -3,10 +3,10 @@
 
 **1. Dataset**
    The official challenge data from Kaggle (RGB videos + skeleton CSVs):
-   !wget -O $DATA_DIR/imigue_skeleton_phase1.zip https://miga3.a3s.fi/imigue_skeleton_phase1.zip
-   !wget -O $DATA_DIR/imigue_rgb_phase1.zip https://miga3.a3s.fi/imigue_rgb_phase1.zip
-   !wget -O $DATA_DIR/imigue_skeleton_phase2.zip https://miga3.a3s.fi/imigue_skeleton_phase2.zip
-   !wget -O $DATA_DIR/imigue_rgb_phase2.zip https://miga3.a3s.fi/imigue_rgb_phase2.zip
+  - https://miga3.a3s.fi/imigue_skeleton_phase1.zip
+  - https://miga3.a3s.fi/imigue_rgb_phase1.zip
+  - https://miga3.a3s.fi/imigue_skeleton_phase2.zip
+  - https://miga3.a3s.fi/imigue_rgb_phase2.zip
 
 **2. Project Code Layout**
    All core logic is implemented as Python modules inside `src/`:
