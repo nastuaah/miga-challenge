@@ -1,14 +1,14 @@
-### **0. Environment and Execution**
+## **0. Environment and Execution**
    Google Colab Pro with GPU A100
 
-### **1. Dataset**
+## **1. Dataset**
    The official challenge data from Kaggle (RGB videos + skeleton CSVs):
   - https://miga3.a3s.fi/imigue_skeleton_phase1.zip
   - https://miga3.a3s.fi/imigue_rgb_phase1.zip
   - https://miga3.a3s.fi/imigue_skeleton_phase2.zip
   - https://miga3.a3s.fi/imigue_rgb_phase2.zip
 
-### **2. Project Code Layout**
+## **2. Project Code Layout**
    All core logic is implemented as Python modules inside `src/`:
 - `src/paths.py`  
   Path resolution helpers for video and skeleton files.
@@ -25,7 +25,7 @@
 - `src/train_model.py` / `src/inference.py`  
   Files for training/inference
 
-### 3. Feature Caching 
+## 3. Feature Caching 
 **3.1 Context stream (`*_ctx.pt`)**
 - Video is split into windows of length `chunk` frames.
 - Each window is embedded by a video backbone into a fixed vector.
