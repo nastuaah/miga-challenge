@@ -58,30 +58,72 @@ Cached features are written to Google Drive.
 - Phase 1 cache directory:
   - [`/content/drive/MyDrive/miga_features_cache_agcn`](https://drive.google.com/drive/folders/1wx77jdvzYPDFmXWWjKo76mGUg_Ghj3eR?usp=sharing)
  
-**5.1 Caching context features (ctx)**
+**5.1 Context stream (_ctx.pt)**
+The context encoder processes windows of RGB frames.
+Three backbones are compared (set via CTX_BACKBONE):
+- r3d_18 – baseline 3D ResNet‑18
+- mc3_18 – mixed convolution 3D ResNet‑18
+- r2plus1d_18 – R(2+1)D‑18 (spatio‑temporal decomposition)
+
+Common parameters:
+- Window size (--chunk): 64 frames
+- Output dimension: 512 per window
+
+File naming: {cache_key}_ctx.pt (shape (num_windows, 512))
+
 ```bash
-PYTHONPATH=/content PYTHONDONTWRITEBYTECODE=1 python -u /content/src/cache_features_cli.py \
+export CTX_BACKBONE=r2plus1d_18
+python -u /content/src/cache_features_cli.py \
   --csv /content/phase1_all_with_split.csv --phase 1 \
-  --feat_dir /content/drive/MyDrive/miga_features_cache_agcn \
-  --chunk 32 --device cuda --do_ctx
+  --feat_dir /content/drive/MyDrive/miga_features_cache_agcn/exp_ctx_r2plus1d \
+  --chunk 64 --device cuda --do_ctx
 ```
+**5.2 Face stream (_face.pt и _facemask.pt)**
+Face features are extracted using:
+- Face detection: YOLOv8 (Ultralytics) or a fast centre crop
+- Face embedding: EmotiEffLib model → 1280‑D vector per detected face
+- Temporal sampling: either the middle frame of the window or an average of three frames
 
-**5.2 Caching face features (face)**
+The two control variables are:
+- FACE_SAMPLING: mid (default) or 3frames_avg
+- FACE_DETECT: yolo (default) or center (no detection, just centre crop)
+  
+Common parameters:
+- Window size (--chunk): 32 frames
+- Output: *_face.pt shape (num_windows, 1280), *_facemask.pt shape (num_windows,) (boolean mask indicating where a face was found)
+
+Example (3‑frame average):
 ```bash
-PYTHONPATH=/content PYTHONDONTWRITEBYTECODE=1 python -u /content/src/cache_features_cli.py \
+export FACE_SAMPLING=3frames_avg
+export FACE_DETECT=yolo
+python -u /content/src/cache_features_cli.py \
   --csv /content/phase1_all_with_split.csv --phase 1 \
-  --feat_dir /content/drive/MyDrive/miga_features_cache_agcn \
+  --feat_dir /content/drive/MyDrive/miga_features_cache_agcn/exp_face_3frames_avg \
   --chunk 32 --device cuda --do_face
-  ```
+```
+<img width="400" height="200" alt="image" src="https://github.com/user-attachments/assets/2ac744f5-ced3-40c5-b91b-d3bc281776c5" />
 
-**5.3 Caching skeleton features (skel)**
+**5.3 Skeleton stream (_skel.pt + _skelmask.pt)**
+Skeleton data is loaded from CSV files (one per video), split into windows, aggregated, and then passed through an AGCN‑based encoder to obtain a 512‑D embedding per window.
+The aggregation method is controlled by SKEL_AGG:
+- mean – average of all frames in the window (baseline)
+- mean_std – concatenation of mean and standard deviation (2× features)
+- max – maximum over frames in the window
+After aggregation, a learnable linear projection maps the aggregated vector to 512 dimensions (the same for all variants).
+
+Common parameters:
+- Window size (--chunk): 32 frames
+- Output: *_skel.pt shape (num_windows, 512), *_skelmask.pt shape (num_windows,) (validity mask)
+
+Example (mean+std aggregation):
 ```bash
-PYTHONPATH=/content PYTHONDONTWRITEBYTECODE=1 python -u /content/src/cache_features_cli.py \
+export SKEL_AGG=mean_std
+python -u /content/src/cache_features_cli.py \
   --csv /content/phase1_all_with_split.csv --phase 1 \
-  --feat_dir /content/drive/MyDrive/miga_features_cache_agcn \
-  --chunk 32 --device cuda --do_skel
-  ```
-For large caching runs, the CSV range was splitted into shards 10-25 items each.
+  --feat_dir /content/drive/MyDrive/miga_features_cache_agcn/exp_skel_mean_std \
+  --chunk 32 --device cpu --do_skel
+```
+<img width="400" height="200" alt="image" src="https://github.com/user-attachments/assets/d22e4a02-fe5e-40c5-bb98-37a175783ae8" />
 
 ## 6. TriStreamModel
 TriStreamModel processes three aligned sequences:
