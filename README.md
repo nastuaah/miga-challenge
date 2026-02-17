@@ -199,6 +199,5 @@ model.eval()
 - The submission file contain:
   - video_id: integer ID
   - label: predicted probability in [0, 1]
-  - prediction file: [`/content/drive/MyDrive/MM-Gesture/phase2_predictions.csv`](https://drive.google.com/file/d/1pMq_2CPvneakrrvFotMD8gvDuQnTGpLe/view?usp=sharing)
-<img width="400" height="189" alt="image" src="https://github.com/user-attachments/assets/c85e6ac2-23ab-46f1-83ea-e94e048291c7" />
+  - prediction file: phase2_predictions.csv
 
