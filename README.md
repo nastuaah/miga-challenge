@@ -59,7 +59,9 @@ Cached features are written to Google Drive.
   - [`/content/drive/MyDrive/miga_features_cache_agcn`](https://drive.google.com/drive/folders/1wx77jdvzYPDFmXWWjKo76mGUg_Ghj3eR?usp=sharing)
  
 **5.1 Context stream (_ctx.pt)**
+
 The context encoder processes windows of RGB frames.
+
 Three backbones are compared (set via CTX_BACKBONE):
 - r3d_18 – baseline 3D ResNet‑18
 - mc3_18 – mixed convolution 3D ResNet‑18
@@ -79,6 +81,7 @@ python -u /content/src/cache_features_cli.py \
   --chunk 64 --device cuda --do_ctx
 ```
 **5.2 Face stream (_face.pt и _facemask.pt)**
+
 Face features are extracted using:
 - Face detection: YOLOv8 (Ultralytics) or a fast centre crop
 - Face embedding: EmotiEffLib model → 1280‑D vector per detected face
@@ -104,7 +107,9 @@ python -u /content/src/cache_features_cli.py \
 <img width="400" height="200" alt="image" src="https://github.com/user-attachments/assets/2ac744f5-ced3-40c5-b91b-d3bc281776c5" />
 
 **5.3 Skeleton stream (_skel.pt + _skelmask.pt)**
+
 Skeleton data is loaded from CSV files (one per video), split into windows, aggregated, and then passed through an AGCN‑based encoder to obtain a 512‑D embedding per window.
+
 The aggregation method is controlled by SKEL_AGG:
 - mean – average of all frames in the window (baseline)
 - mean_std – concatenation of mean and standard deviation (2× features)
@@ -137,10 +142,19 @@ TriStreamModel processes three aligned sequences:
 
 ## 7. Training (Phase 1) 
 - Focal loss with pos_weight (class imbalance handling)
-- Validation metric: ROC AUC on validation fold
+- Validation metric: top-1 accuracy
 - Cross-validation: stratifiedKFold ensures class ratio is preserved in each fold.
-- Best checkpoint saved to: [`/content/drive/MyDrive/best_tristream_cv_agcn.pt`](https://drive.google.com/file/d/1fCPdkaUaZJNtd9BNaSROGlS8ZNfJpzcl/view?usp=sharing)
-- **Best CV AUC: 0.6947368421052631**
+
+**7.1 Ablation experiments**
+
+<img width="400" height="200" alt="image" src="https://github.com/user-attachments/assets/2b80c39f-dc68-4146-b644-cfa23a651567" />
+
+**7.2 Full model results**
+- ctx: exp_ctx_r2plus1d
+- face: baseline_face
+- skel: exp_skel_mean_std
+- **Top-1 accuracy = 72.16%**
+
 
 ## 8. Phase 2 (Test) CSV Preparation 
 Building /content/phase2_all_with_paths.csv:
@@ -185,5 +199,6 @@ model.eval()
 - The submission file contain:
   - video_id: integer ID
   - label: predicted probability in [0, 1]
-  - submission file: [/content/drive/MyDrive/best_tristream_cv_agcn.pt](https://drive.google.com/file/d/1fCPdkaUaZJNtd9BNaSROGlS8ZNfJpzcl/view?usp=sharing)
-<img width="600" height="200" alt="image" src="https://github.com/user-attachments/assets/dc1ee081-41fa-4ae6-a5ba-3657ce09c1f7" />
+  - prediction file: [`/content/drive/MyDrive/MM-Gesture/phase2_predictions.csv`](https://drive.google.com/file/d/1pMq_2CPvneakrrvFotMD8gvDuQnTGpLe/view?usp=sharing)
+<img width="400" height="189" alt="image" src="https://github.com/user-attachments/assets/c85e6ac2-23ab-46f1-83ea-e94e048291c7" />
+
