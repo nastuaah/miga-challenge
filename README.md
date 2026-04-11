@@ -1,4 +1,3 @@
-# Pipeline summary
 
 Проект реализует мультимодальный пайплайн для распознавания скрытых эмоций по видео с использованием трех типов признаков:
 - **context** — RGB-видеопризнаки;
@@ -14,7 +13,7 @@
    Для каждого видео заранее извлекаются и сохраняются `.pt`-признаки по трем модальностям:
    - context: `r3d_18`, `mc3_18`, `r2plus1d_18`;
    - face: baseline, `FaceNet`, `EmotiEffLib`;
-   - skeleton: `mean_std`, `HRNet`, `PoseNet`.
+   - skeleton: `2s-AGCN`, `HRNet`, `PoseNet`.
 
 3. **Формирование датасета**  
    Закэшированные признаки загружаются через кастомный `Dataset`, дополняются по длине и подаются в `DataLoader`.
@@ -34,50 +33,10 @@
 ## Google Drive paths / links
 
 ### Feature cache — Phase 1
-**Path from notebook:**
-```text
-/content/drive/MyDrive/miga_features_cache_agcn
-```
-**Markdown link:**
-```md
-[Google Drive: Phase 1 feature cache](PASTE_YOUR_PUBLIC_DRIVE_LINK_HERE)
-```
+[Google Drive: Phase 1 feature cache](https://drive.google.com/drive/folders/1wx77jdvzYPDFmXWWjKo76mGUg_Ghj3eR)
 
 ### Feature cache — Phase 2
-**Path from notebook:**
-```text
-/content/drive/MyDrive/miga_features_cache_agcn_p2
-```
-**Markdown link:**
-```md
-[Google Drive: Phase 2 feature cache](PASTE_YOUR_PUBLIC_DRIVE_LINK_HERE)
-```
-
-### Phase 1 subfolders
-```text
-/content/drive/MyDrive/miga_features_cache_agcn/baseline_ctx
-/content/drive/MyDrive/miga_features_cache_agcn/exp_ctx_mc3
-/content/drive/MyDrive/miga_features_cache_agcn/exp_ctx_r2plus1d
-/content/drive/MyDrive/miga_features_cache_agcn/baseline_face
-/content/drive/MyDrive/miga_features_cache_agcn/exp_face_facenet_new
-/content/drive/MyDrive/miga_features_cache_agcn/exp_face_emotieff
-/content/drive/MyDrive/miga_features_cache_agcn/exp_skel_mean_std
-/content/drive/MyDrive/miga_features_cache_agcn/exp_skel_hrnet
-/content/drive/MyDrive/miga_features_cache_agcn/exp_skel_posenet
-```
-
-### Phase 2 subfolders
-```text
-/content/drive/MyDrive/miga_features_cache_agcn_p2/baseline_ctx
-/content/drive/MyDrive/miga_features_cache_agcn_p2/exp_ctx_mc3
-/content/drive/MyDrive/miga_features_cache_agcn_p2/exp_ctx_r2plus1d
-/content/drive/MyDrive/miga_features_cache_agcn_p2/baseline_face
-/content/drive/MyDrive/miga_features_cache_agcn_p2/exp_face_facenet
-/content/drive/MyDrive/miga_features_cache_agcn_p2/exp_face_emotieff
-/content/drive/MyDrive/miga_features_cache_agcn_p2/exp_skel_mean_std
-/content/drive/MyDrive/miga_features_cache_agcn_p2/exp_skel_hrnet
-/content/drive/MyDrive/miga_features_cache_agcn_p2/exp_skel_posenet
-```
+[Google Drive: Phase 2 feature cache](https://drive.google.com/drive/folders/11bBvaHCe4l2YAy4m2Y9e6Lwa2lfvyUqY)
 
 ## Dataset URLs
 ```text
